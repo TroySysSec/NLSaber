@@ -1,0 +1,133 @@
+[   12.387013][ T3425] ================================================================================
+[   12.387916][ T3425] UBSAN: array-index-out-of-bounds in /root/linux-kernel/ksrc/linux-5.15/net/netfilter/nf_tables_api.c:4163:17
+[   12.388843][ T3425] index 16 is out of range for type 'u8 [16]'
+[   12.389328][ T3425] CPU: 0 PID: 3425 Comm: poc Not tainted 5.15.0 #1
+[   12.389876][ T3425] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[   12.390845][ T3425] Call Trace:
+[   12.391118][ T3425]  dump_stack_lvl+0xd1/0x138
+[   12.391482][ T3425]  ubsan_epilogue+0xb/0x58
+[   12.391868][ T3425]  __ubsan_handle_out_of_bounds.cold+0x62/0x6c
+[   12.392349][ T3425]  nf_tables_set_desc_parse+0x4db/0x500
+[   12.392781][ T3425]  ? nf_tables_dump_rules_start+0x290/0x290
+[   12.393284][ T3425]  nf_tables_newset+0x7dd/0x31f0
+[   12.393674][ T3425]  ? rcu_read_lock_sched_held+0x36/0x60
+[   12.394152][ T3425]  ? __sanitizer_cov_trace_switch+0x5f/0xf0
+[   12.394617][ T3425]  ? __sanitizer_cov_trace_const_cmp4+0x1c/0x70
+[   12.395143][ T3425]  ? nft_set_elem_expr_alloc+0x280/0x280
+[   12.395584][ T3425]  ? nla_get_range_signed+0x360/0x360
+[   12.396051][ T3425]  ? nfnetlink_rcv_batch+0x1138/0x2710
+[   12.396484][ T3425]  ? reacquire_held_locks+0x4b0/0x4b0
+[   12.396954][ T3425]  ? __nla_parse+0x3c/0x50
+[   12.397306][ T3425]  nfnetlink_rcv_batch+0x17e4/0x2710
+[   12.397731][ T3425]  ? nfnetlink_bind+0x300/0x300
+[   12.398161][ T3425]  ? __lock_acquire+0xc53/0x58b0
+[   12.398561][ T3425]  ? nla_get_range_signed+0x360/0x360
+[   12.399020][ T3425]  ? __sanitizer_cov_trace_const_cmp4+0x1c/0x70
+[   12.399509][ T3425]  ? apparmor_capable+0x1d6/0x4e0
+[   12.399946][ T3425]  ? __sanitizer_cov_trace_const_cmp4+0x1c/0x70
+[   12.400431][ T3425]  ? __nla_parse+0x3c/0x50
+[   12.400779][ T3425]  nfnetlink_rcv+0x3a7/0x420
+[   12.401190][ T3425]  ? nfnetlink_rcv_batch+0x2710/0x2710
+[   12.401622][ T3425]  netlink_unicast+0x527/0x7e0
+[   12.402034][ T3425]  ? netlink_attachskb+0x880/0x880
+[   12.402437][ T3425]  ? __sanitizer_cov_trace_const_cmp1+0x22/0x80
+[   12.402959][ T3425]  ? __phys_addr+0xc2/0x140
+[   12.403314][ T3425]  ? __sanitizer_cov_trace_const_cmp8+0x1d/0x70
+[   12.403821][ T3425]  ? __phys_addr_symbol+0x2c/0x70
+[   12.404232][ T3425]  ? __sanitizer_cov_trace_cmp8+0x1d/0x70
+[   12.404680][ T3425]  ? __check_object_size+0x2e5/0x3f0
+[   12.405142][ T3425]  netlink_sendmsg+0x84b/0xd80
+[   12.405523][ T3425]  ? netlink_unicast+0x7e0/0x7e0
+[   12.405955][ T3425]  ? __sanitizer_cov_trace_const_cmp4+0x1c/0x70
+[   12.406444][ T3425]  ? netlink_unicast+0x7e0/0x7e0
+[   12.406873][ T3425]  sock_sendmsg+0xc9/0x120
+[   12.407223][ T3425]  __sys_sendto+0x1e3/0x2d0
+[   12.407580][ T3425]  ? __ia32_sys_getpeername+0xb0/0xb0
+[   12.408042][ T3425]  ? lockdep_hardirqs_on_prepare+0x400/0x400
+[   12.408512][ T3425]  ? lockdep_hardirqs_on_prepare+0x400/0x400
+[   12.409045][ T3425]  ? __context_tracking_exit+0x80/0x90
+[   12.409478][ T3425]  ? reacquire_held_locks+0x4b0/0x4b0
+[   12.409939][ T3425]  ? __context_tracking_enter+0x93/0xa0
+[   12.410377][ T3425]  ? get_vtime_delta+0x26a/0x420
+[   12.410767][ T3425]  __x64_sys_sendto+0xdc/0x1b0
+[   12.411182][ T3425]  ? lockdep_hardirqs_on+0x79/0x100
+[   12.411591][ T3425]  ? syscall_enter_from_user_mode+0x20/0x70
+[   12.412097][ T3425]  do_syscall_64+0x35/0xb0
+[   12.412444][ T3425]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+[   12.412944][ T3425] RIP: 0033:0x425587
+[   12.413262][ T3425] Code: ff ff f7 d8 48 c7 c3 ff ff ff ff 64 89 02 eb b9 0f 1f 00 f3 0f 1e fa 80 3d dd 2a 09 00 00 41 89 ca 74 10 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 69 c3 55 48 89 e5 53 48 83 ec 38 44 89 4d d0
+[   12.414823][ T3425] RSP: 002b:00007ffea380bc98 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+[   12.415496][ T3425] RAX: ffffffffffffffda RBX: 0000000000000498 RCX: 0000000000425587
+[   12.416150][ T3425] RDX: 0000000000000498 RSI: 00007ffea380bca0 RDI: 0000000000000003
+[   12.416767][ T3425] RBP: 00007ffea380de10 R08: 00000000004901a0 R09: 000000000000000c
+[   12.417417][ T3425] R10: 0000000000000000 R11: 0000000000000202 R12: 00007ffea380cca0
+[   12.418075][ T3425] R13: 00007ffea380df38 R14: 00000000004b2728 R15: 0000000000000001
+[   12.422141][ T3425] ================================================================================
+[   12.423030][ T3425] Kernel panic - not syncing: panic_on_warn set ...
+[   12.423540][ T3425] CPU: 0 PID: 3425 Comm: poc Not tainted 5.15.0 #1
+[   12.424090][ T3425] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[   12.425073][ T3425] Call Trace:
+[   12.425333][ T3425]  dump_stack_lvl+0xd1/0x138
+[   12.425697][ T3425]  panic+0x2aa/0x6bd
+[   12.426047][ T3425]  ? __warn_printk+0xf3/0xf3
+[   12.426412][ T3425]  ? dump_stack_lvl+0x124/0x138
+[   12.426816][ T3425]  ? dump_stack_lvl+0x12e/0x138
+[   12.427211][ T3425]  ? ubsan_epilogue+0x3e/0x58
+[   12.427580][ T3425]  ubsan_epilogue+0x52/0x58
+[   12.427973][ T3425]  __ubsan_handle_out_of_bounds.cold+0x62/0x6c
+[   12.428458][ T3425]  nf_tables_set_desc_parse+0x4db/0x500
+[   12.428926][ T3425]  ? nf_tables_dump_rules_start+0x290/0x290
+[   12.429391][ T3425]  nf_tables_newset+0x7dd/0x31f0
+[   12.429779][ T3425]  ? rcu_read_lock_sched_held+0x36/0x60
+[   12.430252][ T3425]  ? __sanitizer_cov_trace_switch+0x5f/0xf0
+[   12.430715][ T3425]  ? __sanitizer_cov_trace_const_cmp4+0x1c/0x70
+[   12.431242][ T3425]  ? nft_set_elem_expr_alloc+0x280/0x280
+[   12.431687][ T3425]  ? nla_get_range_signed+0x360/0x360
+[   12.432108][ T3425]  ? nfnetlink_rcv_batch+0x1138/0x2710
+[   12.432541][ T3425]  ? reacquire_held_locks+0x4b0/0x4b0
+[   12.433000][ T3425]  ? __nla_parse+0x3c/0x50
+[   12.433352][ T3425]  nfnetlink_rcv_batch+0x17e4/0x2710
+[   12.433771][ T3425]  ? nfnetlink_bind+0x300/0x300
+[   12.434200][ T3425]  ? __lock_acquire+0xc53/0x58b0
+[   12.434595][ T3425]  ? nla_get_range_signed+0x360/0x360
+[   12.435052][ T3425]  ? __sanitizer_cov_trace_const_cmp4+0x1c/0x70
+[   12.435537][ T3425]  ? apparmor_capable+0x1d6/0x4e0
+[   12.435968][ T3425]  ? __sanitizer_cov_trace_const_cmp4+0x1c/0x70
+[   12.436457][ T3425]  ? __nla_parse+0x3c/0x50
+[   12.436830][ T3425]  nfnetlink_rcv+0x3a7/0x420
+[   12.437206][ T3425]  ? nfnetlink_rcv_batch+0x2710/0x2710
+[   12.437638][ T3425]  netlink_unicast+0x527/0x7e0
+[   12.438055][ T3425]  ? netlink_attachskb+0x880/0x880
+[   12.438463][ T3425]  ? __sanitizer_cov_trace_const_cmp1+0x22/0x80
+[   12.438989][ T3425]  ? __phys_addr+0xc2/0x140
+[   12.439345][ T3425]  ? __sanitizer_cov_trace_const_cmp8+0x1d/0x70
+[   12.439872][ T3425]  ? __phys_addr_symbol+0x2c/0x70
+[   12.440265][ T3425]  ? __sanitizer_cov_trace_cmp8+0x1d/0x70
+[   12.440712][ T3425]  ? __check_object_size+0x2e5/0x3f0
+[   12.441164][ T3425]  netlink_sendmsg+0x84b/0xd80
+[   12.441541][ T3425]  ? netlink_unicast+0x7e0/0x7e0
+[   12.441969][ T3425]  ? __sanitizer_cov_trace_const_cmp4+0x1c/0x70
+[   12.442457][ T3425]  ? netlink_unicast+0x7e0/0x7e0
+[   12.442885][ T3425]  sock_sendmsg+0xc9/0x120
+[   12.443234][ T3425]  __sys_sendto+0x1e3/0x2d0
+[   12.443587][ T3425]  ? __ia32_sys_getpeername+0xb0/0xb0
+[   12.444041][ T3425]  ? lockdep_hardirqs_on_prepare+0x400/0x400
+[   12.444509][ T3425]  ? lockdep_hardirqs_on_prepare+0x400/0x400
+[   12.445023][ T3425]  ? __context_tracking_exit+0x80/0x90
+[   12.445448][ T3425]  ? reacquire_held_locks+0x4b0/0x4b0
+[   12.445913][ T3425]  ? __context_tracking_enter+0x93/0xa0
+[   12.446347][ T3425]  ? get_vtime_delta+0x26a/0x420
+[   12.446736][ T3425]  __x64_sys_sendto+0xdc/0x1b0
+[   12.447152][ T3425]  ? lockdep_hardirqs_on+0x79/0x100
+[   12.447561][ T3425]  ? syscall_enter_from_user_mode+0x20/0x70
+[   12.448060][ T3425]  do_syscall_64+0x35/0xb0
+[   12.448413][ T3425]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+[   12.448918][ T3425] RIP: 0033:0x425587
+[   12.449227][ T3425] Code: ff ff f7 d8 48 c7 c3 ff ff ff ff 64 89 02 eb b9 0f 1f 00 f3 0f 1e fa 80 3d dd 2a 09 00 00 41 89 ca 74 10 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 69 c3 55 48 89 e5 53 48 83 ec 38 44 89 4d d0
+[   12.450771][ T3425] RSP: 002b:00007ffea380bc98 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+[   12.451464][ T3425] RAX: ffffffffffffffda RBX: 0000000000000498 RCX: 0000000000425587
+[   12.452120][ T3425] RDX: 0000000000000498 RSI: 00007ffea380bca0 RDI: 0000000000000003
+[   12.452735][ T3425] RBP: 00007ffea380de10 R08: 00000000004901a0 R09: 000000000000000c
+[   12.453398][ T3425] R10: 0000000000000000 R11: 0000000000000202 R12: 00007ffea380cca0
+[   12.454051][ T3425] R13: 00007ffea380df38 R14: 00000000004b2728 R15: 0000000000000001
+[   12.454853][ T3425] Kernel Offset: disabled

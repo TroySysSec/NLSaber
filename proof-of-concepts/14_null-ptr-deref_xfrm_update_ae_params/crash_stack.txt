@@ -1,0 +1,118 @@
+[   17.667090][ T3509] ==================================================================
+[   17.667783][ T3509] BUG: KASAN: null-ptr-deref in xfrm_update_ae_params+0x1a1/0x610
+[   17.668438][ T3509] Write of size 24 at addr 0000000000000000 by task poc/3509
+[   17.669003][ T3509]
+[   17.669209][ T3509] CPU: 0 PID: 3509 Comm: poc Not tainted 6.1.0 #1
+[   17.669713][ T3509] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[   17.670652][ T3509] Call Trace:
+[   17.670922][ T3509]  <TASK>
+[   17.671159][ T3509]  dump_stack_lvl+0xd1/0x138
+[   17.671544][ T3509]  kasan_report+0xd9/0x200
+[   17.671908][ T3509]  ? xfrm_update_ae_params+0x1a1/0x610
+[   17.672346][ T3509]  ? xfrm_update_ae_params+0x1a1/0x610
+[   17.672768][ T3509]  kasan_check_range+0xef/0x190
+[   17.673124][ T3509]  memcpy+0x38/0x60
+[   17.673421][ T3509]  xfrm_update_ae_params+0x1a1/0x610
+[   17.673837][ T3509]  xfrm_new_ae+0x51b/0x890
+[   17.674204][ T3509]  ? xfrm_get_ae+0x610/0x610
+[   17.674573][ T3509]  ? __nla_parse+0x3c/0x50
+[   17.674951][ T3509]  ? xfrm_get_ae+0x610/0x610
+[   17.675334][ T3509]  xfrm_user_rcv_msg+0x455/0xa90
+[   17.675732][ T3509]  ? copy_to_user_state_extra+0x1150/0x1150
+[   17.676210][ T3509]  ? __mutex_lock+0x24a/0x1300
+[   17.676585][ T3509]  ? lock_acquire+0x1dc/0x610
+[   17.676971][ T3509]  ? xfrm_netlink_rcv+0x59/0x80
+[   17.677362][ T3509]  netlink_rcv_skb+0x159/0x420
+[   17.677731][ T3509]  ? copy_to_user_state_extra+0x1150/0x1150
+[   17.678204][ T3509]  ? netlink_ack+0xd90/0xd90
+[   17.678567][ T3509]  xfrm_netlink_rcv+0x68/0x80
+[   17.678944][ T3509]  netlink_unicast+0x535/0x800
+[   17.679331][ T3509]  ? netlink_attachskb+0x870/0x870
+[   17.679739][ T3509]  ? __sanitizer_cov_trace_switch+0x50/0x90
+[   17.680199][ T3509]  ? __phys_addr_symbol+0x2c/0x70
+[   17.680559][ T3509]  ? __check_object_size+0x194/0x5b0
+[   17.680987][ T3509]  netlink_sendmsg+0x925/0xe00
+[   17.681373][ T3509]  ? netlink_unicast+0x800/0x800
+[   17.681753][ T3509]  ? aa_af_perm+0x260/0x260
+[   17.682120][ T3509]  ? bpf_lsm_socket_sendmsg+0x5/0x10
+[   17.682539][ T3509]  ? netlink_unicast+0x800/0x800
+[   17.682933][ T3509]  sock_sendmsg+0xc9/0x120
+[   17.683300][ T3509]  __sys_sendto+0x245/0x330
+[   17.683663][ T3509]  ? __ia32_sys_getpeername+0xb0/0xb0
+[   17.684076][ T3509]  ? reacquire_held_locks+0x4b0/0x4b0
+[   17.684672][ T3509]  ? __bpf_trace_sched_util_est_se_tp+0xc0/0xc0
+[   17.685171][ T3509]  ? rcu_read_lock_sched_held+0x36/0x60
+[   17.685619][ T3509]  ? __rseq_handle_notify_resume+0x55e/0x1150
+[   17.686171][ T3509]  __x64_sys_sendto+0xdc/0x1b0
+[   17.686814][ T3509]  ? syscall_enter_from_user_mode+0x22/0xb0
+[   17.687414][ T3509]  do_syscall_64+0x35/0xb0
+[   17.687820][ T3509]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[   17.688292][ T3509] RIP: 0033:0x41cc27
+[   17.688624][ T3509] Code: ff ff f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b5 0f 1f 00 f3 0f 1e fa 80 3d 3d 74 09 00 00 41 89 ca 74 10 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 69 c3 55 48 89 e5 53 48 83 ec 38 44 89 4d d0
+[   17.690287][ T3509] RSP: 002b:00007ffc05d5c238 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+[   17.691133][ T3509] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 000000000041cc27
+[   17.691915][ T3509] RDX: 0000000000000080 RSI: 00007ffc05d5c460 RDI: 0000000000000003
+[   17.692543][ T3509] RBP: 00007ffc05d5c2a0 R08: 00007ffc05d5c27c R09: 000000000000000c
+[   17.693210][ T3509] R10: 0000000000000000 R11: 0000000000000202 R12: 00007ffc05d5d588
+[   17.693851][ T3509] R13: 00007ffc05d5d598 R14: 00000000004ae868 R15: 0000000000000001
+[   17.694480][ T3509]  </TASK>
+[   17.694725][ T3509] ==================================================================
+[   17.695408][ T3509] Kernel panic - not syncing: panic_on_warn set ...
+[   17.695918][ T3509] CPU: 0 PID: 3509 Comm: poc Not tainted 6.1.0 #1
+[   17.696428][ T3509] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[   17.697447][ T3509] Call Trace:
+[   17.697713][ T3509]  <TASK>
+[   17.697950][ T3509]  dump_stack_lvl+0xd1/0x138
+[   17.698436][ T3509]  panic+0x2d2/0x612
+[   17.698848][ T3509]  ? panic_print_sys_info.part.0+0x110/0x110
+[   17.699603][ T3509]  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+[   17.700159][ T3509]  end_report.part.0+0x3f/0x7c
+[   17.700487][ T3509]  kasan_report.cold+0xa/0xf
+[   17.700797][ T3509]  ? xfrm_update_ae_params+0x1a1/0x610
+[   17.701214][ T3509]  ? xfrm_update_ae_params+0x1a1/0x610
+[   17.701657][ T3509]  kasan_check_range+0xef/0x190
+[   17.702052][ T3509]  memcpy+0x38/0x60
+[   17.702396][ T3509]  xfrm_update_ae_params+0x1a1/0x610
+[   17.702889][ T3509]  xfrm_new_ae+0x51b/0x890
+[   17.703291][ T3509]  ? xfrm_get_ae+0x610/0x610
+[   17.703655][ T3509]  ? __nla_parse+0x3c/0x50
+[   17.704021][ T3509]  ? xfrm_get_ae+0x610/0x610
+[   17.704457][ T3509]  xfrm_user_rcv_msg+0x455/0xa90
+[   17.704848][ T3509]  ? copy_to_user_state_extra+0x1150/0x1150
+[   17.705319][ T3509]  ? __mutex_lock+0x24a/0x1300
+[   17.705699][ T3509]  ? lock_acquire+0x1dc/0x610
+[   17.706023][ T3509]  ? xfrm_netlink_rcv+0x59/0x80
+[   17.706349][ T3509]  netlink_rcv_skb+0x159/0x420
+[   17.706671][ T3509]  ? copy_to_user_state_extra+0x1150/0x1150
+[   17.707063][ T3509]  ? netlink_ack+0xd90/0xd90
+[   17.707375][ T3509]  xfrm_netlink_rcv+0x68/0x80
+[   17.707686][ T3509]  netlink_unicast+0x535/0x800
+[   17.708000][ T3509]  ? netlink_attachskb+0x870/0x870
+[   17.708405][ T3509]  ? __sanitizer_cov_trace_switch+0x50/0x90
+[   17.708870][ T3509]  ? __phys_addr_symbol+0x2c/0x70
+[   17.709264][ T3509]  ? __check_object_size+0x194/0x5b0
+[   17.709672][ T3509]  netlink_sendmsg+0x925/0xe00
+[   17.710051][ T3509]  ? netlink_unicast+0x800/0x800
+[   17.710433][ T3509]  ? aa_af_perm+0x260/0x260
+[   17.710789][ T3509]  ? bpf_lsm_socket_sendmsg+0x5/0x10
+[   17.711209][ T3509]  ? netlink_unicast+0x800/0x800
+[   17.711613][ T3509]  sock_sendmsg+0xc9/0x120
+[   17.712165][ T3509]  __sys_sendto+0x245/0x330
+[   17.712524][ T3509]  ? __ia32_sys_getpeername+0xb0/0xb0
+[   17.712953][ T3509]  ? reacquire_held_locks+0x4b0/0x4b0
+[   17.713399][ T3509]  ? __bpf_trace_sched_util_est_se_tp+0xc0/0xc0
+[   17.713913][ T3509]  ? rcu_read_lock_sched_held+0x36/0x60
+[   17.714366][ T3509]  ? __rseq_handle_notify_resume+0x55e/0x1150
+[   17.714856][ T3509]  __x64_sys_sendto+0xdc/0x1b0
+[   17.715252][ T3509]  ? syscall_enter_from_user_mode+0x22/0xb0
+[   17.715722][ T3509]  do_syscall_64+0x35/0xb0
+[   17.716083][ T3509]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[   17.716725][ T3509] RIP: 0033:0x41cc27
+[   17.717302][ T3509] Code: ff ff f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b5 0f 1f 00 f3 0f 1e fa 80 3d 3d 74 09 00 00 41 89 ca 74 10 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 69 c3 55 48 89 e5 53 48 83 ec 38 44 89 4d d0
+[   17.718799][ T3509] RSP: 002b:00007ffc05d5c238 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+[   17.719448][ T3509] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 000000000041cc27
+[   17.720487][ T3509] RDX: 0000000000000080 RSI: 00007ffc05d5c460 RDI: 0000000000000003
+[   17.721708][ T3509] RBP: 00007ffc05d5c2a0 R08: 00007ffc05d5c27c R09: 000000000000000c
+[   17.722663][ T3509] R10: 0000000000000000 R11: 0000000000000202 R12: 00007ffc05d5d588
+[   17.723624][ T3509] R13: 00007ffc05d5d598 R14: 00000000004ae868 R15: 0000000000000001
+[   17.724435][ T3509]  </TASK>

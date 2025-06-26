@@ -1,0 +1,144 @@
+[   13.613996][ T3509] ==================================================================
+[   13.614468][ T3509] BUG: KASAN: wild-memory-access in ieee80211_tx_control_port+0x373/0xcf0
+[   13.614966][ T3509] Read of size 6 at addr aaaaaaaa0000000c by task poc/3509
+[   13.615382][ T3509]
+[   13.615525][ T3509] CPU: 0 PID: 3509 Comm: poc Not tainted 6.1.0 #1
+[   13.615896][ T3509] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[   13.616584][ T3509] Call Trace:
+[   13.616782][ T3509]  <TASK>
+[   13.616956][ T3509]  dump_stack_lvl+0xd1/0x138
+[   13.617235][ T3509]  kasan_report+0xd9/0x200
+[   13.617496][ T3509]  ? ieee80211_tx_control_port+0x373/0xcf0
+[   13.617838][ T3509]  ? ieee80211_tx_control_port+0x373/0xcf0
+[   13.618183][ T3509]  kasan_check_range+0xef/0x190
+[   13.618468][ T3509]  memcpy+0x1f/0x60
+[   13.618699][ T3509]  ieee80211_tx_control_port+0x373/0xcf0
+[   13.619030][ T3509]  ? ieee80211_tx_skb_tid+0x430/0x430
+[   13.619350][ T3509]  ? netdev_run_todo+0x7ee/0x11b0
+[   13.619643][ T3509]  ? ref_tracker_alloc+0x2d2/0x540
+[   13.619940][ T3509]  nl80211_tx_control_port+0x62d/0xc60
+[   13.620317][ T3509]  ? cfg80211_bss_color_notify+0x830/0x830
+[   13.620653][ T3509]  ? nl80211_pre_doit+0x1ac/0xaa0
+[   13.620946][ T3509]  genl_family_rcv_msg_doit+0x228/0x320
+[   13.621314][ T3509]  ? genl_family_rcv_msg_attrs_parse.isra.0+0x280/0x280
+[   13.621713][ T3509]  ? ns_capable+0xce/0xf0
+[   13.621971][ T3509]  genl_rcv_msg+0x46f/0x780
+[   13.622239][ T3509]  ? genl_family_rcv_msg_doit+0x320/0x320
+[   13.622571][ T3509]  ? lockdep_hardirqs_on_prepare+0x400/0x400
+[   13.622918][ T3509]  ? cfg80211_bss_color_notify+0x830/0x830
+[   13.623259][ T3509]  ? __down_read_common+0x8ba/0x1010
+[   13.623566][ T3509]  netlink_rcv_skb+0x159/0x420
+[   13.623847][ T3509]  ? genl_family_rcv_msg_doit+0x320/0x320
+[   13.624181][ T3509]  ? netlink_ack+0xd90/0xd90
+[   13.624453][ T3509]  ? __bpf_trace_sched_util_est_se_tp+0xc0/0xc0
+[   13.624810][ T3509]  ? netlink_deliver_tap+0x1b1/0xc90
+[   13.625115][ T3509]  genl_rcv+0x24/0x40
+[   13.625352][ T3509]  netlink_unicast+0x535/0x800
+[   13.625629][ T3509]  ? netlink_attachskb+0x870/0x870
+[   13.625926][ T3509]  ? __sanitizer_cov_trace_switch+0x50/0x90
+[   13.626267][ T3509]  ? __phys_addr_symbol+0x2c/0x70
+[   13.626561][ T3509]  ? __check_object_size+0x194/0x5b0
+[   13.626871][ T3509]  netlink_sendmsg+0x925/0xe00
+[   13.627146][ T3509]  ? netlink_unicast+0x800/0x800
+[   13.627440][ T3509]  ? bpf_lsm_socket_sendmsg+0x5/0x10
+[   13.627748][ T3509]  ? netlink_unicast+0x800/0x800
+[   13.628034][ T3509]  sock_sendmsg+0xc9/0x120
+[   13.628300][ T3509]  ____sys_sendmsg+0x69c/0x910
+[   13.628582][ T3509]  ? copy_msghdr_from_user+0x10b/0x160
+[   13.628898][ T3509]  ? kernel_sendmsg+0x50/0x50
+[   13.629180][ T3509]  ? stack_trace_save+0x92/0xc0
+[   13.629463][ T3509]  ? __lock_acquire+0x1435/0x55f0
+[   13.629758][ T3509]  ___sys_sendmsg+0x135/0x1d0
+[   13.630030][ T3509]  ? syscall_exit_to_user_mode+0x19/0x50
+[   13.630355][ T3509]  ? do_recvmmsg+0x750/0x750
+[   13.630630][ T3509]  ? __fget_light+0x205/0x270
+[   13.630906][ T3509]  __sys_sendmsg+0x113/0x1e0
+[   13.631183][ T3509]  ? __sys_sendmsg_sock+0x30/0x30
+[   13.631478][ T3509]  ? __do_sys_rseq+0x5b0/0x5b0
+[   13.631762][ T3509]  ? lockdep_hardirqs_on_prepare+0x17b/0x400
+[   13.632107][ T3509]  ? syscall_enter_from_user_mode+0x22/0xb0
+[   13.632451][ T3509]  do_syscall_64+0x35/0xb0
+[   13.632707][ T3509]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[   13.633053][ T3509] RIP: 0033:0x46c144
+[   13.633287][ T3509] Code: c2 b0 ff ff ff f7 d8 48 c7 c3 ff ff ff ff 64 89 02 eb b9 0f 1f 00 f3 0f 1e fa 80 3d dd 43 0b 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
+[   13.634367][ T3509] RSP: 002b:00007fff3f48b398 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+[   13.634843][ T3509] RAX: ffffffffffffffda RBX: 0000000000d4aa30 RCX: 000000000046c144
+[   13.635295][ T3509] RDX: 0000000000000000 RSI: 00007fff3f48b3d0 RDI: 0000000000000003
+[   13.635737][ T3509] RBP: 00007fff3f48b3c0 R08: 000000000000000a R09: 0000000000000000
+[   13.636183][ T3509] R10: 0000000000000001 R11: 0000000000000202 R12: 0000000000d4ae50
+[   13.636629][ T3509] R13: 0000000000d4a940 R14: 00007fff3f48b3d0 R15: 0000000000000005
+[   13.637086][ T3509]  </TASK>
+[   13.637317][ T3509] ==================================================================
+[   13.640389][ T3509] Kernel panic - not syncing: panic_on_warn set ...
+[   13.640761][ T3509] CPU: 0 PID: 3509 Comm: poc Not tainted 6.1.0 #1
+[   13.641127][ T3509] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[   13.641817][ T3509] Call Trace:
+[   13.642013][ T3509]  <TASK>
+[   13.642188][ T3509]  dump_stack_lvl+0xd1/0x138
+[   13.642462][ T3509]  panic+0x2d2/0x612
+[   13.642697][ T3509]  ? panic_print_sys_info.part.0+0x110/0x110
+[   13.643045][ T3509]  ? preempt_schedule_thunk+0x16/0x18
+[   13.643355][ T3509]  ? preempt_schedule_common+0x59/0xd0
+[   13.643674][ T3509]  ? preempt_schedule_thunk+0x16/0x18
+[   13.643987][ T3509]  end_report.part.0+0x3f/0x7c
+[   13.644269][ T3509]  kasan_report.cold+0xa/0xf
+[   13.644537][ T3509]  ? ieee80211_tx_control_port+0x373/0xcf0
+[   13.644877][ T3509]  ? ieee80211_tx_control_port+0x373/0xcf0
+[   13.645221][ T3509]  kasan_check_range+0xef/0x190
+[   13.645506][ T3509]  memcpy+0x1f/0x60
+[   13.645734][ T3509]  ieee80211_tx_control_port+0x373/0xcf0
+[   13.646058][ T3509]  ? ieee80211_tx_skb_tid+0x430/0x430
+[   13.646374][ T3509]  ? netdev_run_todo+0x7ee/0x11b0
+[   13.646667][ T3509]  ? ref_tracker_alloc+0x2d2/0x540
+[   13.646968][ T3509]  nl80211_tx_control_port+0x62d/0xc60
+[   13.647294][ T3509]  ? cfg80211_bss_color_notify+0x830/0x830
+[   13.647637][ T3509]  ? nl80211_pre_doit+0x1ac/0xaa0
+[   13.647930][ T3509]  genl_family_rcv_msg_doit+0x228/0x320
+[   13.648254][ T3509]  ? genl_family_rcv_msg_attrs_parse.isra.0+0x280/0x280
+[   13.648657][ T3509]  ? ns_capable+0xce/0xf0
+[   13.648915][ T3509]  genl_rcv_msg+0x46f/0x780
+[   13.649186][ T3509]  ? genl_family_rcv_msg_doit+0x320/0x320
+[   13.649515][ T3509]  ? lockdep_hardirqs_on_prepare+0x400/0x400
+[   13.649859][ T3509]  ? cfg80211_bss_color_notify+0x830/0x830
+[   13.650202][ T3509]  ? __down_read_common+0x8ba/0x1010
+[   13.650508][ T3509]  netlink_rcv_skb+0x159/0x420
+[   13.650786][ T3509]  ? genl_family_rcv_msg_doit+0x320/0x320
+[   13.651119][ T3509]  ? netlink_ack+0xd90/0xd90
+[   13.651392][ T3509]  ? __bpf_trace_sched_util_est_se_tp+0xc0/0xc0
+[   13.651757][ T3509]  ? netlink_deliver_tap+0x1b1/0xc90
+[   13.652066][ T3509]  genl_rcv+0x24/0x40
+[   13.652304][ T3509]  netlink_unicast+0x535/0x800
+[   13.652587][ T3509]  ? netlink_attachskb+0x870/0x870
+[   13.652882][ T3509]  ? __sanitizer_cov_trace_switch+0x50/0x90
+[   13.653230][ T3509]  ? __phys_addr_symbol+0x2c/0x70
+[   13.653521][ T3509]  ? __check_object_size+0x194/0x5b0
+[   13.653826][ T3509]  netlink_sendmsg+0x925/0xe00
+[   13.654107][ T3509]  ? netlink_unicast+0x800/0x800
+[   13.654399][ T3509]  ? bpf_lsm_socket_sendmsg+0x5/0x10
+[   13.654700][ T3509]  ? netlink_unicast+0x800/0x800
+[   13.654987][ T3509]  sock_sendmsg+0xc9/0x120
+[   13.655252][ T3509]  ____sys_sendmsg+0x69c/0x910
+[   13.655530][ T3509]  ? copy_msghdr_from_user+0x10b/0x160
+[   13.655849][ T3509]  ? kernel_sendmsg+0x50/0x50
+[   13.656120][ T3509]  ? stack_trace_save+0x92/0xc0
+[   13.656408][ T3509]  ? __lock_acquire+0x1435/0x55f0
+[   13.656709][ T3509]  ___sys_sendmsg+0x135/0x1d0
+[   13.656987][ T3509]  ? syscall_exit_to_user_mode+0x19/0x50
+[   13.657317][ T3509]  ? do_recvmmsg+0x750/0x750
+[   13.657593][ T3509]  ? __fget_light+0x205/0x270
+[   13.657867][ T3509]  __sys_sendmsg+0x113/0x1e0
+[   13.658138][ T3509]  ? __sys_sendmsg_sock+0x30/0x30
+[   13.658440][ T3509]  ? __do_sys_rseq+0x5b0/0x5b0
+[   13.658722][ T3509]  ? lockdep_hardirqs_on_prepare+0x17b/0x400
+[   13.659075][ T3509]  ? syscall_enter_from_user_mode+0x22/0xb0
+[   13.659421][ T3509]  do_syscall_64+0x35/0xb0
+[   13.659685][ T3509]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[   13.660028][ T3509] RIP: 0033:0x46c144
+[   13.660257][ T3509] Code: c2 b0 ff ff ff f7 d8 48 c7 c3 ff ff ff ff 64 89 02 eb b9 0f 1f 00 f3 0f 1e fa 80 3d dd 43 0b 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
+[   13.661340][ T3509] RSP: 002b:00007fff3f48b398 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+[   13.661822][ T3509] RAX: ffffffffffffffda RBX: 0000000000d4aa30 RCX: 000000000046c144
+[   13.662285][ T3509] RDX: 0000000000000000 RSI: 00007fff3f48b3d0 RDI: 0000000000000003
+[   13.662752][ T3509] RBP: 00007fff3f48b3c0 R08: 000000000000000a R09: 0000000000000000
+[   13.663213][ T3509] R10: 0000000000000001 R11: 0000000000000202 R12: 0000000000d4ae50
+[   13.663667][ T3509] R13: 0000000000d4a940 R14: 00007fff3f48b3d0 R15: 0000000000000005
+[   13.664124][ T3509]  </TASK>

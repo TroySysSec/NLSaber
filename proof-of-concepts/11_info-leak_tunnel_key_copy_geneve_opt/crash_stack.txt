@@ -1,0 +1,230 @@
+[   19.795175][ T3508] ==================================================================
+[   19.796087][ T3508] BUG: KASAN: slab-out-of-bounds in nla_put+0xf8/0x130
+[   19.796880][ T3508] Read of size 124 at addr ffff888021a4f5cc by task poc/3508
+[   19.797539][ T3508]
+[   19.797810][ T3508] CPU: 0 PID: 3508 Comm: poc Not tainted 6.1.0 #1
+[   19.798519][ T3508] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[   19.799914][ T3508] Call Trace:
+[   19.800398][ T3508]  <TASK>
+[   19.800637][ T3508]  dump_stack_lvl+0xd1/0x138
+[   19.801015][ T3508]  print_report+0x169/0x493
+[   19.801376][ T3508]  ? __virt_addr_valid+0x5a/0x2d0
+[   19.801773][ T3508]  ? __phys_addr+0xc2/0x140
+[   19.802132][ T3508]  kasan_report+0xd9/0x200
+[   19.802490][ T3508]  ? nla_put+0xf8/0x130
+[   19.802830][ T3508]  ? nla_put+0xf8/0x130
+[   19.803161][ T3508]  kasan_check_range+0xef/0x190
+[   19.803795][ T3508]  memcpy+0x1f/0x60
+[   19.804353][ T3508]  nla_put+0xf8/0x130
+[   19.804962][ T3508]  tunnel_key_dump+0x1233/0x19b0
+[   19.805615][ T3508]  ? tunnel_key_init_net+0x4a0/0x4a0
+[   19.806468][ T3508]  ? memcpy+0x38/0x60
+[   19.806916][ T3508]  ? skb_put+0x134/0x180
+[   19.807356][ T3508]  ? memset+0x1f/0x40
+[   19.807766][ T3508]  ? __nla_put+0x23/0x40
+[   19.808200][ T3508]  ? memcpy+0x38/0x60
+[   19.808709][ T3508]  tcf_action_dump_1+0x35a/0x630
+[   19.809399][ T3508]  ? tcf_action_dump_terse+0x640/0x640
+[   19.809826][ T3508]  ? __nla_reserve+0x98/0xc0
+[   19.810193][ T3508]  ? __nla_put+0x23/0x40
+[   19.810535][ T3508]  ? memcpy+0x38/0x60
+[   19.810804][ T3508]  tcf_action_dump+0x1c5/0x2b0
+[   19.811121][ T3508]  tcf_exts_dump+0x391/0x550
+[   19.811446][ T3508]  fw_dump+0x342/0x750
+[   19.811735][ T3508]  ? fw_classify+0x6c0/0x6c0
+[   19.812050][ T3508]  ? memcpy+0x38/0x60
+[   19.812335][ T3508]  ? fw_classify+0x6c0/0x6c0
+[   19.812649][ T3508]  tcf_fill_node+0x5b1/0x9a0
+[   19.812970][ T3508]  ? tc_setup_cb_call+0x340/0x340
+[   19.813332][ T3508]  ? memset+0x1f/0x40
+[   19.813659][ T3508]  ? __build_skb_around+0x274/0x340
+[   19.814078][ T3508]  tfilter_notify+0x148/0x260
+[   19.814478][ T3508]  tc_new_tfilter+0x176d/0x2300
+[   19.814874][ T3508]  ? lock_chain_count+0x20/0x20
+[   19.815266][ T3508]  ? tc_del_tfilter+0x15b0/0x15b0
+[   19.815792][ T3508]  ? lockdep_hardirqs_on_prepare+0x400/0x400
+[   19.816425][ T3508]  ? kernel_text_address+0x81/0xf0
+[   19.816982][ T3508]  ? __kernel_text_address+0x9/0x30
+[   19.817517][ T3508]  ? bpf_lsm_capable+0x5/0x10
+[   19.817911][ T3508]  ? security_capable+0x8e/0xc0
+[   19.818292][ T3508]  ? tc_del_tfilter+0x15b0/0x15b0
+[   19.818697][ T3508]  rtnetlink_rcv_msg+0x947/0xc80
+[   19.819085][ T3508]  ? rtnl_getlink+0xb10/0xb10
+[   19.819453][ T3508]  ? lock_acquire+0x1dc/0x610
+[   19.819830][ T3508]  netlink_rcv_skb+0x159/0x420
+[   19.820210][ T3508]  ? rtnl_getlink+0xb10/0xb10
+[   19.820581][ T3508]  ? netlink_ack+0xd90/0xd90
+[   19.820938][ T3508]  ? netlink_deliver_tap+0x1a2/0xc90
+[   19.821354][ T3508]  ? netlink_deliver_tap+0x1b1/0xc90
+[   19.821766][ T3508]  netlink_unicast+0x535/0x800
+[   19.822145][ T3508]  ? netlink_attachskb+0x870/0x870
+[   19.822542][ T3508]  ? __sanitizer_cov_trace_switch+0x50/0x90
+[   19.822999][ T3508]  ? __phys_addr_symbol+0x2c/0x70
+[   19.823399][ T3508]  ? __check_object_size+0x194/0x5b0
+[   19.823813][ T3508]  netlink_sendmsg+0x925/0xe00
+[   19.824174][ T3508]  ? netlink_unicast+0x800/0x800
+[   19.824562][ T3508]  ? bpf_lsm_socket_sendmsg+0x5/0x10
+[   19.824971][ T3508]  ? netlink_unicast+0x800/0x800
+[   19.825354][ T3508]  sock_sendmsg+0xc9/0x120
+[   19.825699][ T3508]  __sys_sendto+0x245/0x330
+[   19.826054][ T3508]  ? __ia32_sys_getpeername+0xb0/0xb0
+[   19.826475][ T3508]  ? _copy_to_user+0x10f/0x130
+[   19.826850][ T3508]  ? __ia32_sys_connect+0xb0/0xb0
+[   19.827260][ T3508]  __x64_sys_sendto+0xdc/0x1b0
+[   19.827643][ T3508]  ? syscall_enter_from_user_mode+0x22/0xb0
+[   19.828098][ T3508]  do_syscall_64+0x35/0xb0
+[   19.828449][ T3508]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[   19.828909][ T3508] RIP: 0033:0x4264e7
+[   19.829223][ T3508] Code: ff ff f7 d8 48 c7 c3 ff ff ff ff 64 89 02 eb b9 0f 1f 00 f3 0f 1e fa 80 3d 7d 2b 09 00 00 41 89 ca 74 10 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 69 c3 55 48 89 e5 53 48 83 ec 38 44 89 4d d0
+[   19.832745][ T3508] RSP: 002b:00007fff37eff348 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+[   19.833390][ T3508] RAX: ffffffffffffffda RBX: 0000000000001000 RCX: 00000000004264e7
+[   19.833995][ T3508] RDX: 00000000000001a8 RSI: 00007fff37eff350 RDI: 0000000000000003
+[   19.834601][ T3508] RBP: 00007fff37f003f0 R08: 000000000048b260 R09: 000000000000000c
+[   19.835206][ T3508] R10: 0000000000000000 R11: 0000000000000202 R12: 00007fff37f00350
+[   19.835814][ T3508] R13: 00007fff37f00548 R14: 00000000004b3868 R15: 0000000000000001
+[   19.836424][ T3508]  </TASK>
+[   19.836672][ T3508]
+[   19.836859][ T3508] Allocated by task 3508:
+[   19.837217][ T3508]  kasan_save_stack+0x2f/0x50
+[   19.837603][ T3508]  kasan_set_track+0x21/0x30
+[   19.837972][ T3508]  __kasan_kmalloc+0xa1/0xb0
+[   19.838347][ T3508]  __kmalloc+0x56/0xd0
+[   19.838674][ T3508]  metadata_dst_alloc+0x21/0x50
+[   19.839073][ T3508]  tunnel_key_init+0xc1d/0x1d10
+[   19.842539][ T3508]  tcf_action_init_1+0x449/0x6a0
+[   19.842930][ T3508]  tcf_action_init+0x53e/0x860
+[   19.843293][ T3508]  tcf_exts_validate_ex+0x43c/0x560
+[   19.843701][ T3508]  tcf_exts_validate+0x3e/0x50
+[   19.844082][ T3508]  fw_set_parms+0x110/0xb10
+[   19.844443][ T3508]  fw_change+0xa15/0x1460
+[   19.844780][ T3508]  tc_new_tfilter+0x9de/0x2300
+[   19.845157][ T3508]  rtnetlink_rcv_msg+0x947/0xc80
+[   19.845547][ T3508]  netlink_rcv_skb+0x159/0x420
+[   19.845924][ T3508]  netlink_unicast+0x535/0x800
+[   19.846290][ T3508]  netlink_sendmsg+0x925/0xe00
+[   19.846675][ T3508]  sock_sendmsg+0xc9/0x120
+[   19.847029][ T3508]  __sys_sendto+0x245/0x330
+[   19.847386][ T3508]  __x64_sys_sendto+0xdc/0x1b0
+[   19.847771][ T3508]  do_syscall_64+0x35/0xb0
+[   19.848173][ T3508]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[   19.848662][ T3508]
+[   19.848848][ T3508] The buggy address belongs to the object at ffff888021a4f400
+[   19.848848][ T3508]  which belongs to the cache kmalloc-512 of size 512
+[   19.850011][ T3508] The buggy address is located 460 bytes inside of
+[   19.850011][ T3508]  512-byte region [ffff888021a4f400, ffff888021a4f600)
+[   19.851129][ T3508]
+[   19.851322][ T3508] The buggy address belongs to the physical page:
+[   19.851822][ T3508] page:ffffea0000869380 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x21a4e
+[   19.852605][ T3508] head:ffffea0000869380 order:1 compound_mapcount:0 compound_pincount:0
+[   19.853245][ T3508] flags: 0xfff00000010200(slab|head|node=0|zone=1|lastcpupid=0x7ff)
+[   19.853884][ T3508] raw: 00fff00000010200 ffffea0000869400 dead000000000004 ffff888017c41c80
+[   19.854588][ T3508] raw: 0000000000000000 0000000080080008 00000001ffffffff 0000000000000000
+[   19.855267][ T3508] page dumped because: kasan: bad access detected
+[   19.855780][ T3508] page_owner tracks the page as allocated
+[   19.856232][ T3508] page last allocated via order 1, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 1101, tgid 1101 (kworker/u2:3), ts 6966208991, free_ts 0
+[   19.860892][ T3508]  post_alloc_hook+0x2ba/0x320
+[   19.861282][ T3508]  get_page_from_freelist+0x1945/0x2e60
+[   19.861741][ T3508]  __alloc_pages+0x1cc/0x5c0
+[   19.862118][ T3508]  alloc_pages+0x1a5/0x270
+[   19.862495][ T3508]  allocate_slab+0x25c/0x340
+[   19.862875][ T3508]  ___slab_alloc+0x8cc/0x13e0
+[   19.863279][ T3508]  __slab_alloc.isra.0+0x56/0xa0
+[   19.863680][ T3508]  __kmem_cache_alloc_node+0x122/0x3c0
+[   19.864119][ T3508]  kmalloc_trace+0x21/0x60
+[   19.864483][ T3508]  alloc_bprm+0x51/0x880
+[   19.864815][ T3508]  kernel_execve+0xab/0x4e0
+[   19.865172][ T3508]  call_usermodehelper_exec_async+0x2e8/0x570
+[   19.865652][ T3508]  ret_from_fork+0x1f/0x30
+[   19.866003][ T3508] page_owner free stack trace missing
+[   19.866417][ T3508]
+[   19.866606][ T3508] Memory state around the buggy address:
+[   19.867031][ T3508]  ffff888021a4f480: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   19.867644][ T3508]  ffff888021a4f500: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   19.868350][ T3508] >ffff888021a4f580: 00 00 00 00 00 00 00 00 00 04 fc fc fc fc fc fc
+[   19.869038][ T3508]                                               ^
+[   19.869528][ T3508]  ffff888021a4f600: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   19.870135][ T3508]  ffff888021a4f680: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   19.870754][ T3508] ==================================================================
+[   19.871402][ T3508] Kernel panic - not syncing: panic_on_warn set ...
+[   19.871822][ T3508] CPU: 0 PID: 3508 Comm: poc Not tainted 6.1.0 #1
+[   19.872232][ T3508] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[   19.873152][ T3508] Call Trace:
+[   19.873419][ T3508]  <TASK>
+[   19.873659][ T3508]  dump_stack_lvl+0xd1/0x138
+[   19.874030][ T3508]  panic+0x2d2/0x612
+[   19.874354][ T3508]  ? panic_print_sys_info.part.0+0x110/0x110
+[   19.874833][ T3508]  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+[   19.875330][ T3508]  end_report.part.0+0x3f/0x7c
+[   19.875709][ T3508]  kasan_report.cold+0xa/0xf
+[   19.876065][ T3508]  ? nla_put+0xf8/0x130
+[   19.876407][ T3508]  ? nla_put+0xf8/0x130
+[   19.876741][ T3508]  kasan_check_range+0xef/0x190
+[   19.877123][ T3508]  memcpy+0x1f/0x60
+[   19.877438][ T3508]  nla_put+0xf8/0x130
+[   19.877770][ T3508]  tunnel_key_dump+0x1233/0x19b0
+[   19.878349][ T3508]  ? tunnel_key_init_net+0x4a0/0x4a0
+[   19.879016][ T3508]  ? memcpy+0x38/0x60
+[   19.879520][ T3508]  ? skb_put+0x134/0x180
+[   19.880129][ T3508]  ? memset+0x1f/0x40
+[   19.880639][ T3508]  ? __nla_put+0x23/0x40
+[   19.881322][ T3508]  ? memcpy+0x38/0x60
+[   19.881903][ T3508]  tcf_action_dump_1+0x35a/0x630
+[   19.882519][ T3508]  ? tcf_action_dump_terse+0x640/0x640
+[   19.883209][ T3508]  ? __nla_reserve+0x98/0xc0
+[   19.883682][ T3508]  ? __nla_put+0x23/0x40
+[   19.884108][ T3508]  ? memcpy+0x38/0x60
+[   19.884602][ T3508]  tcf_action_dump+0x1c5/0x2b0
+[   19.885194][ T3508]  tcf_exts_dump+0x391/0x550
+[   19.885846][ T3508]  fw_dump+0x342/0x750
+[   19.886316][ T3508]  ? fw_classify+0x6c0/0x6c0
+[   19.887030][ T3508]  ? memcpy+0x38/0x60
+[   19.887672][ T3508]  ? fw_classify+0x6c0/0x6c0
+[   19.888348][ T3508]  tcf_fill_node+0x5b1/0x9a0
+[   19.889132][ T3508]  ? tc_setup_cb_call+0x340/0x340
+[   19.889881][ T3508]  ? memset+0x1f/0x40
+[   19.890407][ T3508]  ? __build_skb_around+0x274/0x340
+[   19.890991][ T3508]  tfilter_notify+0x148/0x260
+[   19.891531][ T3508]  tc_new_tfilter+0x176d/0x2300
+[   19.891916][ T3508]  ? lock_chain_count+0x20/0x20
+[   19.892315][ T3508]  ? tc_del_tfilter+0x15b0/0x15b0
+[   19.892981][ T3508]  ? lockdep_hardirqs_on_prepare+0x400/0x400
+[   19.893678][ T3508]  ? kernel_text_address+0x81/0xf0
+[   19.894359][ T3508]  ? __kernel_text_address+0x9/0x30
+[   19.895132][ T3508]  ? bpf_lsm_capable+0x5/0x10
+[   19.895837][ T3508]  ? security_capable+0x8e/0xc0
+[   19.896492][ T3508]  ? tc_del_tfilter+0x15b0/0x15b0
+[   19.897054][ T3508]  rtnetlink_rcv_msg+0x947/0xc80
+[   19.897569][ T3508]  ? rtnl_getlink+0xb10/0xb10
+[   19.898067][ T3508]  ? lock_acquire+0x1dc/0x610
+[   19.898554][ T3508]  netlink_rcv_skb+0x159/0x420
+[   19.899032][ T3508]  ? rtnl_getlink+0xb10/0xb10
+[   19.899569][ T3508]  ? netlink_ack+0xd90/0xd90
+[   19.900219][ T3508]  ? netlink_deliver_tap+0x1a2/0xc90
+[   19.901018][ T3508]  ? netlink_deliver_tap+0x1b1/0xc90
+[   19.901696][ T3508]  netlink_unicast+0x535/0x800
+[   19.902279][ T3508]  ? netlink_attachskb+0x870/0x870
+[   19.902983][ T3508]  ? __sanitizer_cov_trace_switch+0x50/0x90
+[   19.903845][ T3508]  ? __phys_addr_symbol+0x2c/0x70
+[   19.904593][ T3508]  ? __check_object_size+0x194/0x5b0
+[   19.905344][ T3508]  netlink_sendmsg+0x925/0xe00
+[   19.906000][ T3508]  ? netlink_unicast+0x800/0x800
+[   19.906566][ T3508]  ? bpf_lsm_socket_sendmsg+0x5/0x10
+[   19.907387][ T3508]  ? netlink_unicast+0x800/0x800
+[   19.908088][ T3508]  sock_sendmsg+0xc9/0x120
+[   19.908808][ T3508]  __sys_sendto+0x245/0x330
+[   19.909447][ T3508]  ? __ia32_sys_getpeername+0xb0/0xb0
+[   19.910126][ T3508]  ? _copy_to_user+0x10f/0x130
+[   19.910689][ T3508]  ? __ia32_sys_connect+0xb0/0xb0
+[   19.911229][ T3508]  __x64_sys_sendto+0xdc/0x1b0
+[   19.911625][ T3508]  ? syscall_enter_from_user_mode+0x22/0xb0
+[   19.912121][ T3508]  do_syscall_64+0x35/0xb0
+[   19.912665][ T3508]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[   19.913253][ T3508] RIP: 0033:0x4264e7
+[   19.913654][ T3508] Code: ff ff f7 d8 48 c7 c3 ff ff ff ff 64 89 02 eb b9 0f 1f 00 f3 0f 1e fa 80 3d 7d 2b 09 00 00 41 89 ca 74 10 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 69 c3 55 48 89 e5 53 48 83 ec 38 44 89 4d d0
+[   19.915816][ T3508] RSP: 002b:00007fff37eff348 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+[   19.916923][ T3508] RAX: ffffffffffffffda RBX: 0000000000001000 RCX: 00000000004264e7
+[   19.917873][ T3508] RDX: 00000000000001a8 RSI: 00007fff37eff350 RDI: 0000000000000003
+[   19.918493][ T3508] RBP: 00007fff37f003f0 R08: 000000000048b260 R09: 000000000000000c
+[   19.919120][ T3508] R10: 0000000000000000 R11: 0000000000000202 R12: 00007fff37f00350
+[   19.919767][ T3508] R13: 00007fff37f00548 R14: 00000000004b3868 R15: 0000000000000001
+[   19.920403][ T3508]  </TASK>
